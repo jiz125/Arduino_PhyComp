@@ -1,0 +1,81 @@
+// LED definitions for easy reference
+int bLed = A0;
+int gLed = A1;
+int rLed = A2;
+
+// variables for the BLUE LED
+bool bLed_state = LOW;            // this holds the current state of the red LED
+unsigned long bLed_Millis = 0;   // this holds the start time of millis for computing the elapse time
+unsigned long bLed_Interval = 3000;  // this holds the interval of each toggle of LED
+
+// variables for the GREEN LED
+bool gLed_state = LOW;            // this holds the current state of the LED
+unsigned long gLed_Millis = 0;   // this holds the start time of millis for computing the elapse time
+unsigned long gLed_Interval = 5000;  // this holds the interval of each toggle of LED
+
+// variables for the RED led
+bool rLed_state = LOW;            // this holds the current state of the LED
+unsigned long rLed_Millis = 0;   // this holds the start time of millis for computing the elapse time
+unsigned long rLed_Interval = 7000;  // this holds the interval of each toggle of LED
+
+unsigned long currentMillis = 0;   // this holds the current time captured by the millis() function
+// it is use in general for synchronization purpose
+
+void setup() {
+
+  pinMode(bLed, OUTPUT);
+  pinMode(gLed, OUTPUT);
+  pinMode(rLed, OUTPUT);
+
+}
+
+void loop() {
+
+  // Store the currently time
+  currentMillis = millis();
+
+  // Process all the task
+  Blue();
+  Green();
+  Red();
+
+}
+
+void Blue() {
+  if (currentMillis -  bLed_Millis >= bLed_Interval) {
+    // Elapse time has reached the interval
+    // Save the current time as previous time
+    bLed_Millis = currentMillis;
+
+    // toggle LED state
+    bLed_state = !bLed_state;
+
+    digitalWrite(bLed, bLed_state);
+  }
+}
+
+void Green() {
+  if (currentMillis - gLed_Millis >= gLed_Interval) {
+    // Elapse time has reached the interval
+    // Save the current time as previous time
+    gLed_Millis = currentMillis;
+
+    // toggle LED state
+    gLed_state = !gLed_state;
+
+    digitalWrite(gLed, gLed_state);
+  }
+}
+
+void Red() {
+  if (currentMillis - rLed_Millis >= rLed_Interval) {
+    // Elapse time has reached the interval
+    // Save the current time as previous time
+    rLed_Millis = currentMillis;
+
+    // toggle LED state
+    rLed_state = !rLed_state;
+
+    digitalWrite(rLed, rLed_state);
+  }
+}
