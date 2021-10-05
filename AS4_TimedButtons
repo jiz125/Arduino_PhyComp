@@ -1,1 +1,77 @@
-xxx
+//code source: https://www.instructables.com/Arduino-Dual-Function-Button-Long-PressShort-Press/
+
+int led1 = 12;
+int led2 = 11;
+int button = 3;
+
+boolean led1state = false;
+boolean led2state = false;
+
+boolean buttonActive = false; //change dependant on the state of button
+boolean longPressActive = false; // 1. allow code to stop the long press from activitating more than oce.
+//2. stop short press function being activated when we realse the button after a long press
+
+long buttonTimer = 0; //recoard the time the button first being pressed
+long longPressTime = 250; //the length of time I wish the button held down for --> long press function
+
+
+void setup() {
+
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(button, INPUT);
+
+
+}
+
+void loop() {
+
+  //FIRST, read the state of the button
+  if ( digitalRead(button) == HIGH ) { //read whether the button has been pressed or not
+
+    //button pressed
+    if ( buttonActive == false) {
+      buttonActive = true;
+      buttonTimer = millis();
+    }
+
+
+    if ((millis() - buttonTimer > longPressTime) && (longPressActive == false)) {
+
+     longPressActive = true;
+     led1state = !led1state;
+     digitalWrite(led1, led1state);
+     delay(100);
+     led1state = !led1state;
+     digitalWrite(led1, led1state);
+     delay(100);
+        //////////////////////////////////////// only blink for once and turn off. 
+      ///////////////would like the led1 start to BLINKING untill I press again
+
+//      Serial.println(buttonTimer);
+    }
+
+
+  } else {
+
+    //button not pressed
+
+    if (buttonActive == true) {
+
+      if (longPressActive == true) {
+
+        longPressActive = false;
+
+      } else {
+
+        led2state = !led2state;
+        digitalWrite(led2, led2state);
+      }
+
+      buttonActive = false;
+
+    }
+
+  }
+
+}
